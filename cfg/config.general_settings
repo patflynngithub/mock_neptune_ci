@@ -1,0 +1,102 @@
+# Included makefile for build settings that apply to ALL
+# platforms and compilers 
+
+# The comments at the beginnings of build settings sections
+# are suggestions on what settings to place in them. Following
+# these suggestions is helpful to maintaining clarity of the
+# build system. However, feel free to make exceptions for
+# individual settings if it makes sense to do so.
+
+# ==================================================
+
+GENERAL_SETTINGS_MAKEFILE := $(lastword $(MAKEFILE_LIST))
+$(info ... including GENERAL BUILD SETTINGS MAKEFILE: $(GENERAL_SETTINGS_MAKEFILE))
+
+# Variable that must be set by this point
+ifndef NEPTUNE_COMPILER
+  $(error ERROR: NEPTUNE_COMPILER is not set)
+endif
+
+# Select proper compiler-specific settings include file suffix
+ifeq ($(findstring intel,$(NEPTUNE_COMPILER)),intel)
+   COMPILER_INCLUDE_SUFFIX := intel
+else ifeq ($(findstring mpt,$(NEPTUNE_COMPILER)),mpt)
+   COMPILER_INCLUDE_SUFFIX := intel
+else ifeq ($(findstring pgi,$(NEPTUNE_COMPILER)),pgi)
+   COMPILER_INCLUDE_SUFFIX := pgi
+else ifeq ($(findstring gnu,$(NEPTUNE_COMPILER)),gnu)
+   COMPILER_INCLUDE_SUFFIX := gnu
+else ifeq ($(findstring cray,$(NEPTUNE_COMPILER)),cray)
+   COMPILER_INCLUDE_SUFFIX := cray
+else ifeq ($(findstring xlf,$(NEPTUNE_COMPILER)),xlf)
+   COMPILER_INCLUDE_SUFFIX := xlf
+else
+   $(error ERROR: NEPTUNE_COMPILER has invalid value of $(NEPTUNE_COMPILER))
+endif
+
+COMPILER_INCLUDE_FILE := $(addsuffix $(COMPILER_INCLUDE_SUFFIX), $(CONFIG_DIR)/config.compiler.)
+$(info COMPILER_INCLUDE_FILE: $(COMPILER_INCLUDE_FILE))
+
+# ==================================================
+
+NEPTUNE_CPU ?= Not provided
+$(info NEPTUNE_CPU: $(NEPTUNE_CPU))
+
+# ==================================================
+
+# Set any variables here that apply both to all platforms
+# and to all compilers. Can also do this in the section
+# below just after the compiler-specific include command.
+
+
+# this can be changed in the compiler-specific included makefile
+AR := ar
+
+INCLUDE     :=
+MAKE_MODULE :=
+
+# Get compile-time "git describe" info to pass to Fortran code via
+# Fortran compiler command-line
+#
+# Note that the following "shell" command has been verified not to
+# make the build fail when NEPTUNE is stored in a local directory
+# that is not a git repisitory (i.e., a subdirectory with a .git
+# subdirectory)
+#
+$(info attempt to get "git describe" info)
+NEPTUNE_BUILD_ID := $(shell git describe --long --dirty | sed 's/ /_/g')
+#
+# add quotes to make it a string in the eyes of Fortran
+# (had to do it this way because, if gfortran is
+#  used as the compiler of NEPTUNE, couldn't get gfortran to
+#  work with various attempted STRINGIFY() CPP macro functions,
+#  even one listed online as working wth gfortran.
+#  In the future, might come up with a STRINGIFY() macro that
+#  works in gfortran.)
+CPPFLAGS_LOG := -DBUILD_ID=\"$(NEPTUNE_BUILD_ID)\"
+CPPFLAGS += $(CPPFLAGS_LOG)
+
+# ==================================================
+
+# Build settings that apply to a specific compiler
+
+include $(COMPILER_INCLUDE_FILE)
+
+$(info ... reentering GENERAL BUILD SETTINGS MAKEFILE: $(GENERAL_SETTINGS_MAKEFILE))
+
+# ==================================================
+
+# Can set any variables here that apply to both all
+# platforms and to all compilers. Can also do in the section
+# just before the above compiler-specific include command.
+
+# comment out this line to change from EPX to PX ordering
+#   if commented out, then compile only with LEBLK=1, EVEC=1
+
+# NO_HDF5 can also be set to 't' via an environment
+# or Make command-line variable. This allows NEPTUNE
+# (IOAPI specifically) to build without HDF5 being
+# installed. This can sometimes be helpful in some
+# NEPTUNE development circumstances.
+
+
