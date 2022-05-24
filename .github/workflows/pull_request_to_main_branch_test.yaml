@@ -23,13 +23,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-    - name: build
-      run:  make
-    - name: run_test
-      run:  ./build/bin/main_1 succeed output_matrix_file_accurate good_timing
-    - name: show_matrix
-      run:  cat matrix.txt
-    - name: check_matrix
-      run:  python check_matrix.py
-    - name: check_timing
-      run:  python check_timing.py 100
+    - name: Mock test
+      run: | 
+        cd ci/mock_test
+        ./run_ci.sh
