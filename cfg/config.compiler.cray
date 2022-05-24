@@ -1,0 +1,127 @@
+# Included makefile for build settings that are CRAY compiler-specific
+#
+# There are separate sections for settings that apply to all
+# platforms/cpus and for settings that don't apply to all
+# platforms/cpus
+
+# The comments at the beginnings of build settings sections
+# are suggestions on what settings to place in them. Following
+# these suggestions is helpful to maintaining clarity of the
+# build system. However, feel free to make exceptions for
+# individual settings if it makes sense to do so.
+
+COMPILER_SPECIFIC_MAKEFILE := $(lastword $(MAKEFILE_LIST))
+$(info ... including COMPILER-SPECIFIC BUILD SETTINGS MAKEFILE: $(COMPILER_SPECIFIC_MAKEFILE))
+
+# ==========================================================
+#
+# Place here build settings that are both compiler-specific
+# and platform-specific (and/or cpu-specific). This could be
+# in the form of a variable definition or appending to an
+# earlier defined variable.
+#
+# Can also do this in the last section of this file.
+#
+# Example:
+#
+#     ifeq ($(NEPTUNE_CPU), broadwell)
+#        ... := ...
+#        ... += ...
+#     endif
+
+# no settings here yet
+
+# ==========================================================
+#
+# Place build settings here that are compiler-specific and
+# apply to ALL platforms/cpus in the NEPTUNE build system
+# that support the compiler.  This could be in the form of
+# a variable definition or appending to an earlier defined
+# variable.
+#
+# In special circumstances, when it’s the only, best, or clearest
+# way to get the build to work, build settings that are both
+# compiler-specific and platform-specific (and/or cpu-specific)
+# could also be placed in this section (rather than in the first or
+# last build settings sections of this file)
+
+CPPFLAGS += -D__cray_compiler__
+
+CPPFLAGS += -DOMP_OFFLOAD_DECLARE_TARGET=""
+
+ifeq ($(OPENMP),t)
+  OMPFLAGS := -h omp -h noacc
+  CPPFLAGS += -D_OPENMP_ -DCOLORDSS
+  CFLAGS   += -D_OPENMP_   # needed by err_dup.h
+else
+  OMPFLAGS := -h noomp -h noacc
+endif
+ifneq ($(SINGLE),t)
+  AUTODBL := -s real64
+else
+  CPPFLAGS += -DSINGLE
+endif
+
+FFOPT := -O3
+FFLAGS := -I. $(OMPFLAGS) $(AUTODBL) -g -fpic -ef
+LDFLAGS += $(OMPFLAGS) -lz
+ifeq ($(FOR_GPU),t)
+  FFOPT := -O2
+  DEVICE := $(OMPFLAGS) -h noacc # acc
+  CPPFLAGS += -DFOR_GPU
+  FFLAGS := $(OMPFLAGS) $(AUTODBL) -g -fpic
+  LDFLAGS += -L/opt/nvidia/hpc_sdk/Linux_x86_64/20.11/cuda/11.1/lib64 -lcudart -lnvptxcompiler_static
+endif
+FFLAGS += -J $(OBJDIR)
+FFLAGS_NOPT := $(FFLAGS)
+FFLAGS_MOD_DOMAIN := $(FFLAGS)
+CCPP_FFLAGS := $(FFLAGS)
+CCPP_FFLAGS += $(AUTODBL)
+CCPP_FFLAGS_NOOPT = $(FFLAGS_NOPT) $(CCPP_FFLAGS)
+CCPP_FFLAGS += $(FFOPT)
+CPPFLAGS += -DNEPTUNE_COMPILER=$(NEPTUNE_COMPILER) 
+
+CC     := time cc
+FC     := time ftn $(DEVICE) $(TAU_FLAG)
+LD     := time ftn $(DEVICE) $(OMPFLAGS)
+
+AR := ar
+
+
+# lower optimization to speed up compilation
+$(OBJDIR)/GFS_diag_module.o : $(NEPTUNE_DIR)/external/ccpp/data/GFS_diag_module.F90
+	cd $(NEPTUNE_DIR)/external/ccpp/data ; $(FC) -c $(FFLAGS_NOPT) $(INCLUDE) $(NEP_ESMF_INCLUDES)  $< -o $@
+
+$(OBJDIR)/ccpp_host_driver.o : $(NEPTUNE_DIR)/external/ccpp/driver/ccpp_host_driver.F90
+	cd $(NEPTUNE_DIR)/external/ccpp/driver ; $(FC) -c $(FFLAGS_NOPT) $(INCLUDE) $(NEP_ESMF_INCLUDES)  $< -o $@
+
+$(OBJDIR)/GFS_init.o : $(NEPTUNE_DIR)/external/ccpp/data/GFS_init.F90
+	cd $(NEPTUNE_DIR)/external/ccpp/data ; $(FC) -c $(FFLAGS_NOPT) $(INCLUDE) $(NEP_ESMF_INCLUDES)  $< -o $@
+
+$(OBJDIR)/physics_vars_module.o : $(NEPTUNE_DIR)/src/physics_vars_module.F90
+	cd $(NEPTUNE_DIR)/src ; $(FC) -c $(FFLAGS_NOPT) $(INCLUDE) $(NEP_ESMF_INCLUDES)  $< -o $@
+
+$(OBJDIR)/ccpp_host_driver_module.o : $(NEPTUNE_DIR)/external/ccpp/driver/ccpp_host_driver_module.F90
+	cd $(NEPTUNE_DIR)/external/ccpp/data ; $(FC) -c $(FFLAGS_NOPT) $(INCLUDE) $(NEP_ESMF_INCLUDES)  $< -o $@
+
+$(OBJDIR)/GFS_typedefs_module.o : $(NEPTUNE_DIR)/external/ccpp/data/GFS_typedefs_module.F90
+	cd $(NEPTUNE_DIR)/external/ccpp/data ; $(FC) -c $(FFLAGS_NOPT) $(INCLUDE) $(NEP_ESMF_INCLUDES)  $< -o $@
+
+# ==========================================================
+#
+# Place here build settings that are both compiler-specific
+# and platform-specific (and/or cpu-specific). This could be
+# a variable definition or appending to an earlier defined
+# variable. Can also do this in the first build settings
+# section of this file
+#
+# Following these build settings, there may be additional
+# compiler-specific build settings that apply to all platforms/cpus
+# because they need to be set after the platform- and/or
+# cpu-specific build settings set in this section.
+#
+# Also, if needed, in this section one can overwrite
+# previous variable definitions
+
+# no settings here yet
+
