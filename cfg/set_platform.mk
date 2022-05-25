@@ -10,18 +10,22 @@ $(info NEPTUNE_PLATFORM: $(NEPTUNE_PLATFORM))
 # want to try one of the existng below platforms on a
 # new platform
 #
-ifeq ($(findstring sandy,$(NEPTUNE_PLATFORM)),sandy)
-   override NEPTUNE_PLATFORM := sandy
-else ifeq ($(findstring narwhal,$(NEPTUNE_PLATFORM)),narwhal)
-   override NEPTUNE_PLATFORM := narwhal
-else ifeq ($(findstring gaffney,$(NEPTUNE_PLATFORM)),gaffney)
-   override NEPTUNE_PLATFORM := gaffney
-else ifeq ($(findstring mayhem,$(NEPTUNE_PLATFORM)),mayhem)
-   override NEPTUNE_PLATFORM := mayhem
-else ifeq ($(findstring anniesavoy,$(NEPTUNE_PLATFORM)),anniesavoy)
-   override NEPTUNE_PLATFORM := anniesavoy
+ifdef CI
+   override NEPTUNE_PLATFORM := CI
 else
-   $(error ERROR: NEPTUNE_PLATFORM has unsupported value of $(NEPTUNE_PLATFORM))
+  ifeq ($(findstring sandy,$(NEPTUNE_PLATFORM)),sandy)
+     override NEPTUNE_PLATFORM := sandy
+  else ifeq ($(findstring narwhal,$(NEPTUNE_PLATFORM)),narwhal)
+     override NEPTUNE_PLATFORM := narwhal
+  else ifeq ($(findstring gaffney,$(NEPTUNE_PLATFORM)),gaffney)
+     override NEPTUNE_PLATFORM := gaffney
+  else ifeq ($(findstring mayhem,$(NEPTUNE_PLATFORM)),mayhem)
+     override NEPTUNE_PLATFORM := mayhem
+  else ifeq ($(findstring anniesavoy,$(NEPTUNE_PLATFORM)),anniesavoy)
+     override NEPTUNE_PLATFORM := anniesavoy
+  else
+     $(error ERROR: NEPTUNE_PLATFORM has unsupported value of $(NEPTUNE_PLATFORM))
+  endif
 endif
 
 $(info NEPTUNE_PLATFORM (modified): $(NEPTUNE_PLATFORM))

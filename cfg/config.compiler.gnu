@@ -45,31 +45,6 @@ $(info ... including COMPILER-SPECIFIC BUILD SETTINGS MAKEFILE: $(COMPILER_SPECI
 # could also be placed in this section (rather than in the first or
 # last build settings sections of this file)
 
-CPPFLAGS += -D__gnu_compiler__
-
-CPPFLAGS += -DOMP_OFFLOAD_DECLARE_TARGET=""
-
-ifeq ($(OPENMP),t)
-  OMPFLAGS := -fopenmp #-foffload=nvptx-none='-Ofast -lm -misa=sm_35'
-  CPPFLAGS += -D_OPENMP_
-  CFLAGS   += -D_OPENMP_   # needed by err_dup.h
-endif
-ifneq ($(SINGLE),t)
-  AUTODBL := -fdefault-real-8 -fdefault-double-8
-else
-  CPPFLAGS += -DSINGLE
-endif
-ifeq ($(DEBUG),t)
-  DEBUG_OPT := -DDEBUG -DNO_HARDCODED_RANGES
-endif
-
-CFLAGS := -g -fpic $(OMPFLAGS)
-FFLAGS := $(OMPFLAGS) $(DEBUG_OPT) -fmax-stack-var-size=65536 $(AUTODBL) -g -fpic -ffree-line-length-none -Wall -Wextra -Wconversion -Wno-unused -Wno-unused-dummy-argument -fbacktrace -fimplicit-none -fcheck=array-temps,bounds,do,mem,recursion
-FFLAGS_MOD_DOMAIN := $(FFLAGS)
-LDFLAGS := -g -fpic $(AUTODBL) $(OMPFLAGS)
-CPPFLAGS += -DNEPTUNE_COMPILER=$(NEPTUNE_COMPILER)
-LIBDIR += -L$(LAPACK_DIR) -llapack -lrefblas $(INTEL_IRC) -lstdc++
-
 AR := ar
 
 # ==========================================================
@@ -92,6 +67,11 @@ CC := mpicc
 ifeq ($(NEPTUNE_PLATFORM),anniesavoy)  # John M's system with custom wrappers for intel MPI
   FC := mpigfortran10
   LD := $(FC)
+ifeq ($(NEPTUNE_PLATFORM),CI)  # for CI server
+  CC  := gcc
+  CXX := g++
+  FC  := gfortran
+  LD  := $(FC)
 else
   FC := mpif90
   LD := $(FC)
