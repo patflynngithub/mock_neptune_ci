@@ -27,4 +27,4 @@ jobs:
       run: | 
         cd ci/mock_test
         ./run_ci.sh
-        ls -alr
+        ls -al mock_neptune_fcst_test
