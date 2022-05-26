@@ -44,3 +44,37 @@ function build_neptune_fcst {
 )
 }
 
+function setup_test {
+(
+  CI_DIR=${1}
+  CI_RUN=${2}
+
+  rm -rf ${CI_RUN}
+  mkdir -p ${CI_RUN}
+
+: ${NEPTUNE_TARGET:=neptune_fcst}
+
+  if [ -e ${CI_DIR}/${NEPTUNE_TARGET}.exe ]; then
+    cp ${CI_DIR}/${NEPTUNE_TARGET}.exe ${CI_RUN}
+  fi
+)
+}
+
+function run_test {
+  CI_DIR=${1}
+  CI_RUN=${2}
+
+: ${SETUP_TEST:=1}
+: ${HOST:=sandy}
+: ${STRIPE_COUNT:=0}
+: ${STRIPE_SIZE:=0}
+: ${ACCOUNT:=NRLMR46355YFM}
+: ${QUEUE:=frontier}
+
+  #If dealing with lustre file system, set the stripe count and size.
+  type lfs &> /dev/null && echo lfs setstripe -c ${STRIPE_COUNT} -S ${STRIPE_SIZE} ${CI_RUN}
+
+  cd ${CI_RUN}
+
+  ./neptune_fcst.exe succeed output_matrix_file_accurate good_timing
+}
