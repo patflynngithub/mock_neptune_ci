@@ -27,3 +27,4 @@ jobs:
       run: | 
         cd ci/mock_test
         ./run_ci.sh
+        ls -alr
