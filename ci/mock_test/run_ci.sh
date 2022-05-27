@@ -69,6 +69,44 @@ setup_test ${CI_DIR} ${CI_RUN}
 
 EXPER01=${CI_RUN}
 
-run_test ${CI_DIR} ${CI_RUN} succeed output_matrix_file_accurate good_timing
+# run_test ${CI_DIR} ${CI_RUN} succeed output_matrix_file_accurate good_timing
 # run_test ${CI_DIR} ${CI_RUN} fail output_matrix_file_accurate good_timing
+run_test ${CI_DIR} ${CI_RUN} succeed output_matrix_file_inaccurate good_timing
+
+set +x
+echo
+echo "*********************************************************"
+echo "*                                                       *"
+echo "*   Execution of mock neptune_fcst test successful      *"
+echo "*                                                       *"
+echo "*********************************************************"
+set -x
+
+#------------------------------------------------------------------
+# Test data results
+#------------------------------------------------------------------
+set +x
+echo
+echo "***********************************************************"
+echo "*                                                         *"
+echo "*                  Test data results                      *"
+echo "*                                                         *"
+echo "*                      STARTED                            *"
+echo "*                                                         *"
+echo "***********************************************************"
+set -x
+
+python ${BIN_DIR}/check_data_result.py ${CI_RUN}/matrix.txt
+
+set +x
+echo
+echo "***********************************************************"
+echo "*                                                         *"
+echo "*                  Test data results                      *"
+echo "*                                                         *"
+echo "*                     SUCCESSFUL                          *"
+echo "*                                                         *"
+echo "***********************************************************"
+set -x
+
 
