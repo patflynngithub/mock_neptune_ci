@@ -63,18 +63,11 @@ function setup_test {
 function run_test {
   CI_DIR=${1}
   CI_RUN=${2}
-
-: ${SETUP_TEST:=1}
-: ${HOST:=sandy}
-: ${STRIPE_COUNT:=0}
-: ${STRIPE_SIZE:=0}
-: ${ACCOUNT:=NRLMR46355YFM}
-: ${QUEUE:=frontier}
-
-  #If dealing with lustre file system, set the stripe count and size.
-  type lfs &> /dev/null && echo lfs setstripe -c ${STRIPE_COUNT} -S ${STRIPE_SIZE} ${CI_RUN}
+  CI_SUCCESS=${3}
+  CI_DATA_ACCURACY=${4}
+  CI_TIMING=${5}
 
   cd ${CI_RUN}
 
-  ./neptune_fcst.exe succeed output_matrix_file_accurate good_timing
+  ./neptune_fcst.exe ${CI_SUCCESS} ${CI_DATA_ACCURACY} ${CI_TIMING}
 }

@@ -69,5 +69,6 @@ setup_test ${CI_DIR} ${CI_RUN}
 
 EXPER01=${CI_RUN}
 
-run_test ${CI_DIR} ${CI_RUN}
+run_test ${CI_DIR} ${CI_RUN} succeed output_matrix_file_accurate good_timing
+# run_test ${CI_DIR} ${CI_RUN} fail output_matrix_file_accurate good_timing
 
