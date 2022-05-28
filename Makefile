@@ -71,6 +71,9 @@ $(info NEPTUNE_DIR: $(NEPTUNE_DIR))
 
 export CONFIG_DIR         ?= $(NEPTUNE_DIR)/cfg
 export SRC_DIR            ?= $(NEPTUNE_DIR)/src
+
+# ----
+#
 export NEPTUNE_BUILD_DIR  ?= $(NEPTUNE_DIR)/build
 
 # This allows for a relative path to be specified for NEPTUNE_BUILD_DIR.
@@ -156,6 +159,7 @@ neptune_fcst:
 clean:
 	rm -rf $(NEPTUNE_BUILD_DIR)
 	rm -f  make.log
+
 deepclean: clean
 
 # ======================================================

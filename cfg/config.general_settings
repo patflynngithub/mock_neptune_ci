@@ -48,7 +48,6 @@ $(info NEPTUNE_CPU: $(NEPTUNE_CPU))
 # and to all compilers. Can also do this in the section
 # below just after the compiler-specific include command.
 
-
 # this can be changed in the compiler-specific included makefile
 AR := ar
 
@@ -99,4 +98,5 @@ $(info ... reentering GENERAL BUILD SETTINGS MAKEFILE: $(GENERAL_SETTINGS_MAKEFI
 # installed. This can sometimes be helpful in some
 # NEPTUNE development circumstances.
 
+# no settings here yet
 

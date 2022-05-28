@@ -21,7 +21,7 @@ $(info ... including PLATFORM-SPECIFIC BUILD SETTINGS MAKEFILE: $(PLATFORM_SPECI
 #       NEPTUNE_COMPILER ?= intel-crayenv
 #
 
-# set for github.com; will need to be changed for NRLMRY Github CI server
+# set for Github.com; will need to be changed for NRLMRY Github CI server
 NEPTUNE_COMPILER ?= gnu 
 $(info NEPTUNE_COMPILER: $(NEPTUNE_COMPILER))
 
@@ -72,6 +72,7 @@ NEPTUNE_CPU ?= broadwell
 #     CPPFLAGS += prepended values  # assuming CPPFLAGS hasn't
 #                                   # yet been defined
 
+# no settings here yet
 
 # ---------------------------------------------------------------
 

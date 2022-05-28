@@ -71,6 +71,7 @@ NEPTUNE_CPU ?= broadwell
 #     CPPFLAGS += prepended values  # assuming CPPFLAGS hasn't
 #                                   # yet been defined
 
+# no settings here yet
 
 # ---------------------------------------------------------------
 

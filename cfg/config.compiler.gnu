@@ -67,7 +67,7 @@ CC := mpicc
 ifeq ($(NEPTUNE_PLATFORM),anniesavoy)  # John M's system with custom wrappers for intel MPI
   FC := mpigfortran10
   LD := $(FC)
-else ifeq ($(NEPTUNE_PLATFORM),CI)  # for CI server
+else ifeq ($(NEPTUNE_PLATFORM),CI)  # for Github.com CI server
   CC  := gcc
   CXX := g++
   FC  := gfortran

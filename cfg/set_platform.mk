@@ -10,8 +10,8 @@ $(info NEPTUNE_PLATFORM: $(NEPTUNE_PLATFORM))
 # want to try one of the existng below platforms on a
 # new platform
 #
-ifdef CI    # CI is github-provided environment variable
-            # indicating running on github
+ifdef CI    # CI is Github-provided environment variable
+            # indicating execution on Github
    override NEPTUNE_PLATFORM := CI
 else
   ifeq ($(findstring sandy,$(NEPTUNE_PLATFORM)),sandy)

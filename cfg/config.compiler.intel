@@ -33,6 +33,7 @@ $(info ... including COMPILER-SPECIFIC BUILD SETTINGS MAKEFILE: $(COMPILER_SPECI
 #        ... += ...
 #     endif
 
+# no settings here yet
 
 # ==========================================================
 #
@@ -72,11 +73,6 @@ AR := xiar
 ifndef NEPTUNE_CPU
   $(error ERROR: NEPTUNE_CPU is not set)
 endif
-
-# FFLAGS: NEPTUNE_CPU specific settings
-
-# Intel compiler on epyc Rome, (O2 is actually shade faster)
-# Skylake, Cascade Lake (O2 is actually a shade faster)
 
 FFLAGS += -module $(OBJDIR)
 
