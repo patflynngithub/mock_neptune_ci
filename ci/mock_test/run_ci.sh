@@ -144,7 +144,7 @@ echo "*                                                       *"
 echo "*********************************************************"
 set -x
 
-TIMING_CEILING=100
+TIMING_CEILING=1
 python ${BIN_DIR}/check_timing.py ${EXPER01}/nep.error.000000 ${TIMING_CEILING}
 timing_success=$?
 
