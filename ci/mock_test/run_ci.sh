@@ -69,9 +69,10 @@ setup_test ${CI_DIR} ${CI_RUN}
 # save CI_RUN is case there are ever multiple test runs
 EXPER01=${CI_RUN}
 
-run_test ${CI_DIR} ${CI_RUN} succeed output_matrix_file_accurate good_timing
+# run_test ${CI_DIR} ${CI_RUN} succeed output_matrix_file_accurate good_timing
 # run_test ${CI_DIR} ${CI_RUN} fail output_matrix_file_accurate good_timing
 # run_test ${CI_DIR} ${CI_RUN} succeed output_matrix_file_inaccurate good_timing
+run_test ${CI_DIR} ${CI_RUN} succeed output_matrix_file_accurate bad_timing
 
 set +x
 echo
@@ -144,7 +145,7 @@ echo "*                                                       *"
 echo "*********************************************************"
 set -x
 
-TIMING_CEILING=1
+TIMING_CEILING=100
 python ${BIN_DIR}/check_timing.py ${EXPER01}/nep.error.000000 ${TIMING_CEILING}
 timing_success=$?
 
@@ -182,7 +183,7 @@ if [ $overall_timing_success -eq 0 ]; then
    echo
    echo "#########################################################"
    echo "#                                                       #"
-   echo "#           Assess test execution timings               #"
+   echo "#           Assess all test executions timings          #"
    echo "#                                                       #"
    echo "#                     SUCCESS                           #"
    echo "#                                                       #"
@@ -193,9 +194,9 @@ else
    echo
    echo "#########################################################"
    echo "#                                                       #"
-   echo "#           Assess test execution timings               #"
+   echo "#           Assess all test executions timings          #"
    echo "#                                                       #"
-   echo "#                     FAILURE                           #"
+   echo "#             FAILURE (at least one timing test failed) #"
    echo "#                                                       #"
    echo "#########################################################"
    set -x
