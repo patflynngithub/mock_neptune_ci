@@ -74,8 +74,8 @@ setup_test ${CI_DIR} ${CI_RUN}
 # save CI_RUN is case there are ever multiple test runs
 EXPER=${CI_RUN}
 
-run_test ${CI_DIR} ${CI_RUN} succeed output_matrix_file_accurate good_timing
-# run_test ${CI_DIR} ${CI_RUN} fail output_matrix_file_accurate good_timing
+# run_test ${CI_DIR} ${CI_RUN} succeed output_matrix_file_accurate good_timing
+run_test ${CI_DIR} ${CI_RUN} fail output_matrix_file_accurate good_timing
 # run_test ${CI_DIR} ${CI_RUN} succeed output_matrix_file_inaccurate good_timing
 # run_test ${CI_DIR} ${CI_RUN} succeed output_matrix_file_accurate bad_timing
 
