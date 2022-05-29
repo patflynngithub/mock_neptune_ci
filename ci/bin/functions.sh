@@ -71,3 +71,30 @@ function run_test {
 
   ./neptune_fcst.exe ${CI_SUCCESS} ${CI_DATA_ACCURACY} ${CI_TIMING}
 }
+
+function compare_test {
+(
+  CI_DATA1=${1}
+  CI_DATA2=${2}
+  log_file=${3-compare.log}
+
+  python ${BIN_DIR}/compare_fields.py ${CI_DATA1} ${CI_DATA2} >> ${log_file}
+)
+}
+
+function assess_test_data_diffs {(
+
+  diff_result_file=${1-compare.log}
+
+  if $(grep -q "data is accurate" $diff_result_file) ; then
+    echo "Data is accurate: " $diff_result_file
+    return 0
+  elif $(grep -q "data is inaccurate" $diff_result_file) ; then
+    echo "Data is inaccurate: " $diff_result_file
+    return 1
+  else
+    echo "No \"no data is ...\" line in $diff_result_file to indicate"
+    echo " data accuracy" 
+    return 1
+  fi 
+)}

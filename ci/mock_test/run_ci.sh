@@ -4,6 +4,8 @@
 # Mock NEPTUNE CI test
 #
 
+# ================================================================
+
 NEPTUNE_TOP=$(readlink -f ${NEPTUNE_TOP:=../../})
 CI_DIR=$(readlink -f ${CI_TEST:=./})
 COMPARE_LOG=compare.log
@@ -67,7 +69,7 @@ ln -sf ${CI_RUN} ${CI_DIR}/${test_dir}
 setup_test ${CI_DIR} ${CI_RUN}
 
 # save CI_RUN is case there are ever multiple test runs
-EXPER01=${CI_RUN}
+EXPER=${CI_RUN}
 
 run_test ${CI_DIR} ${CI_RUN} succeed output_matrix_file_accurate good_timing
 # run_test ${CI_DIR} ${CI_RUN} fail output_matrix_file_accurate good_timing
@@ -84,20 +86,49 @@ echo "*********************************************************"
 set -x
 
 #------------------------------------------------------------------
+# Generate data differences between 1 and 2 threads tests data results
+#------------------------------------------------------------------
+
+set +x
+echo
+echo "**************************************************************"
+echo "*                                                            *"
+echo "* Generate data differences between baseline and data result *"
+echo "*                                                            *"
+echo "*                      STARTED                               *"
+echo "*                                                            *"
+echo "**************************************************************"
+set -x
+
+compare_test ${EXPER}/baseline_matrix.txt ${EXPER}/data_result_matrix.txt ${COMPARE_LOG}
+
+set +x
+echo
+echo "**************************************************************"
+echo "*                                                            *"
+echo "* Generate data differences between baseline and data result *"
+echo "*                                                            *"
+echo "*                     FINISHED                               *"
+echo "*                                                            *"
+echo "**************************************************************"
+set -x
+
+#------------------------------------------------------------------
 # Test data results
 #------------------------------------------------------------------
+
 set +x
 echo
 echo "***********************************************************"
 echo "*                                                         *"
-echo "*                  Test data results                      *"
+echo "*                  Test data result                       *"
 echo "*                                                         *"
 echo "*                      STARTED                            *"
 echo "*                                                         *"
 echo "***********************************************************"
 set -x
 
-python ${BIN_DIR}/check_data_result.py ${EXPER01}/matrix.txt
+assess_test_data_diffs $COMPARE_LOG
 
 set +x
 echo
@@ -146,13 +177,13 @@ echo "*********************************************************"
 set -x
 
 TIMING_CEILING=100
-python ${BIN_DIR}/check_timing.py ${EXPER01}/nep.error.000000 ${TIMING_CEILING}
+python ${BIN_DIR}/assess_timing.py ${EXPER}/nep.error.000000 ${TIMING_CEILING}
 timing_success=$?
 
 if [ $timing_success -ne 0 ]; then
   overall_timing_success=$timing_success
   echo "Timing assessment exit code: $timing_success"
-  echo "Timing ceiling exceeded in ${EXPER01}."
+  echo "Timing ceiling exceeded in ${EXPER}."
   set +x
   echo
   echo "#########################################################"
@@ -168,7 +199,7 @@ else
   echo
   echo "#########################################################"
   echo "#                                                       #"
-  echo "#        Assess mock test execution timing          #"
+  echo "#        Assess mock test execution timing              #"
   echo "#                                                       #"
   echo "#                     SUCCESS                           #"
   echo "#                                                       #"
