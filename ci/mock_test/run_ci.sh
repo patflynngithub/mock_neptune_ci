@@ -76,8 +76,8 @@ EXPER=${CI_RUN}
 
 # run_test ${CI_DIR} ${CI_RUN} succeed output_matrix_file_accurate good_timing
 # run_test ${CI_DIR} ${CI_RUN} fail output_matrix_file_accurate good_timing
-run_test ${CI_DIR} ${CI_RUN} succeed output_matrix_file_inaccurate good_timing
-# run_test ${CI_DIR} ${CI_RUN} succeed output_matrix_file_accurate bad_timing
+# run_test ${CI_DIR} ${CI_RUN} succeed output_matrix_file_inaccurate good_timing
+run_test ${CI_DIR} ${CI_RUN} succeed output_matrix_file_accurate bad_timing
 
 set +x
 echo
