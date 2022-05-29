@@ -117,31 +117,31 @@ echo "**************************************************************"
 set -x
 
 #------------------------------------------------------------------
-# Test data results
+# Assess data differences between baseline and data result
 #------------------------------------------------------------------
 
 set +x
 echo
-echo "***********************************************************"
-echo "*                                                         *"
-echo "*                  Test data result                       *"
-echo "*                                                         *"
-echo "*                      STARTED                            *"
-echo "*                                                         *"
-echo "***********************************************************"
+echo "************************************************************"
+echo "*                                                          *"
+echo "* Assess data differences between baseline and data result *"
+echo "*                                                          *"
+echo "*                      STARTED                             *"
+echo "*                                                          *"
+echo "************************************************************"
 set -x
 
 assess_test_data_diffs ${COMPARE_LOG}
 
 set +x
 echo
-echo "***********************************************************"
-echo "*                                                         *"
-echo "*                  Test data result                       *"
-echo "*                                                         *"
-echo "*                     SUCCESSFUL                          *"
-echo "*                                                         *"
-echo "***********************************************************"
+echo "************************************************************"
+echo "*                                                          *"
+echo "* Assess data differences between baseline and data result *"
+echo "*                                                          *"
+echo "*                     SUCCESSFUL                           *"
+echo "*                                                          *"
+echo "************************************************************"
 set -x
 
 #------------------------------------------------------------------
