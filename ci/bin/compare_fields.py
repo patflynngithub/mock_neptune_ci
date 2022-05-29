@@ -4,6 +4,13 @@ from os.path import exists
 
 # ------------------------------------------------------------
 
+# Compares the data in two data result text files
+#
+# A data result text file is assumed to only hold a numeric
+# matrix that can be read in by numpy
+
+# ------------------------------------------------------------
+
 # Read in command line
 
 if not len(sys.argv) == 3:

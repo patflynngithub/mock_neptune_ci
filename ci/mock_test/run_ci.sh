@@ -1,5 +1,8 @@
 #!/bin/bash -xe
 
+# note that, because of above bash setting, that the shell script
+# will automatically stop on nonzero exit code
+
 #
 # Mock NEPTUNE CI test
 #
@@ -128,13 +131,13 @@ echo "*                                                         *"
 echo "***********************************************************"
 set -x
 
-assess_test_data_diffs $COMPARE_LOG
+assess_test_data_diffs ${COMPARE_LOG}
 
 set +x
 echo
 echo "***********************************************************"
 echo "*                                                         *"
-echo "*                  Test data results                      *"
+echo "*                  Test data result                       *"
 echo "*                                                         *"
 echo "*                     SUCCESSFUL                          *"
 echo "*                                                         *"
@@ -177,7 +180,7 @@ echo "*********************************************************"
 set -x
 
 TIMING_CEILING=100
-python ${BIN_DIR}/assess_timing.py ${EXPER}/nep.error.000000 ${TIMING_CEILING}
+assess_test_timing ${EXPER}/nep.error.000000 ${TIMING_CEILING}
 timing_success=$?
 
 if [ $timing_success -ne 0 ]; then

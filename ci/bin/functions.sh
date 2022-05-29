@@ -61,6 +61,7 @@ function setup_test {
 }
 
 function run_test {
+(
   CI_DIR=${1}
   CI_RUN=${2}
   CI_SUCCESS=${3}
@@ -70,6 +71,7 @@ function run_test {
   cd ${CI_RUN}
 
   ./neptune_fcst.exe ${CI_SUCCESS} ${CI_DATA_ACCURACY} ${CI_TIMING}
+)
 }
 
 function compare_test {
@@ -98,3 +100,20 @@ function assess_test_data_diffs {(
     return 1
   fi 
 )}
+
+function assess_test_timing {
+(
+  # NOTE: before calling this function, if one has multiple runs of a test to
+  #       assess the timing of and want to assess all these runs regardless of
+  #       whether one of the runs fails their timing assessment, do a "set +e"
+  #       to turn off automatically stopping bash script execution when a
+  #       nonzero exit code is returned. "set -e" can be used to turn back on
+  #       the automatic stopping of execution if needed.
+
+  TIMING_FILE=${1-undefined}
+  TIMING_CELING=${2--1}
+
+  python ${BIN_DIR}/assess_timing.py ${TIMING_FILE} ${TIMING_CEILING}
+)
+}
+

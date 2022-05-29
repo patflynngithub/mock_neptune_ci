@@ -2,6 +2,11 @@ import sys
 
 # ------------------------------------------------------------
 
+# Assess the standard NEPTUNE timing info contained in the 
+# file with the passed filename
+
+# ------------------------------------------------------------
+
 # Read in command line
 
 if not len(sys.argv) == 3:

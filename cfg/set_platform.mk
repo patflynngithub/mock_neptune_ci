@@ -14,16 +14,15 @@ ifdef CI    # CI is Github-provided environment variable
             # indicating execution on Github
    override NEPTUNE_PLATFORM := CI
 else
+
+  # Some of the config.platform.* files (e.g., narwahl, anniesavoy, etc.)
+  # have been eliminated from this GitHub NEPTUNE CI mockup. If needed
+  # they be restored from the actual NEPTUNE repository, albeit
+  # in stripped down form suitable for this mockup (see
+  # config.platform.sandy for stripped down example).
+
   ifeq ($(findstring sandy,$(NEPTUNE_PLATFORM)),sandy)
      override NEPTUNE_PLATFORM := sandy
-  else ifeq ($(findstring narwhal,$(NEPTUNE_PLATFORM)),narwhal)
-     override NEPTUNE_PLATFORM := narwhal
-  else ifeq ($(findstring gaffney,$(NEPTUNE_PLATFORM)),gaffney)
-     override NEPTUNE_PLATFORM := gaffney
-  else ifeq ($(findstring mayhem,$(NEPTUNE_PLATFORM)),mayhem)
-     override NEPTUNE_PLATFORM := mayhem
-  else ifeq ($(findstring anniesavoy,$(NEPTUNE_PLATFORM)),anniesavoy)
-     override NEPTUNE_PLATFORM := anniesavoy
   else
      $(error ERROR: NEPTUNE_PLATFORM has unsupported value of $(NEPTUNE_PLATFORM))
   endif
