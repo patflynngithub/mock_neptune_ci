@@ -17,19 +17,17 @@ ifndef NEPTUNE_COMPILER
   $(error ERROR: NEPTUNE_COMPILER is not set)
 endif
 
+# Some of the config.compiler.* files (e.g., cray, xlf) have
+# been eliminated from this GitHub NEPTUNE CI mockup. If needed
+# they be restored from the actual NEPTUNE repository, albeit
+# in stripped down form suitable for this mockup (see
+# config.compiler.intel for stripped down example).
+
 # Select proper compiler-specific settings include file suffix
 ifeq ($(findstring intel,$(NEPTUNE_COMPILER)),intel)
    COMPILER_INCLUDE_SUFFIX := intel
-else ifeq ($(findstring mpt,$(NEPTUNE_COMPILER)),mpt)
-   COMPILER_INCLUDE_SUFFIX := intel
-else ifeq ($(findstring pgi,$(NEPTUNE_COMPILER)),pgi)
-   COMPILER_INCLUDE_SUFFIX := pgi
 else ifeq ($(findstring gnu,$(NEPTUNE_COMPILER)),gnu)
    COMPILER_INCLUDE_SUFFIX := gnu
-else ifeq ($(findstring cray,$(NEPTUNE_COMPILER)),cray)
-   COMPILER_INCLUDE_SUFFIX := cray
-else ifeq ($(findstring xlf,$(NEPTUNE_COMPILER)),xlf)
-   COMPILER_INCLUDE_SUFFIX := xlf
 else
    $(error ERROR: NEPTUNE_COMPILER has invalid value of $(NEPTUNE_COMPILER))
 endif
@@ -47,7 +45,6 @@ $(info NEPTUNE_CPU: $(NEPTUNE_CPU))
 # Set any variables here that apply both to all platforms
 # and to all compilers. Can also do this in the section
 # below just after the compiler-specific include command.
-
 
 # this can be changed in the compiler-specific included makefile
 AR := ar
@@ -99,4 +96,5 @@ $(info ... reentering GENERAL BUILD SETTINGS MAKEFILE: $(GENERAL_SETTINGS_MAKEFI
 # installed. This can sometimes be helpful in some
 # NEPTUNE development circumstances.
 
+# no settings here yet
 

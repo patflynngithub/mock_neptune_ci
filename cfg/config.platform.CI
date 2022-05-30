@@ -21,7 +21,8 @@ $(info ... including PLATFORM-SPECIFIC BUILD SETTINGS MAKEFILE: $(PLATFORM_SPECI
 #       NEPTUNE_COMPILER ?= intel-crayenv
 #
 
-NEPTUNE_COMPILER ?= intel
+# set for Github.com; will need to be changed for NRLMRY Github CI server
+NEPTUNE_COMPILER ?= gnu 
 $(info NEPTUNE_COMPILER: $(NEPTUNE_COMPILER))
 
 # ---------------------------------------------------------------
@@ -46,14 +47,14 @@ $(info NEPTUNE_COMPILER: $(NEPTUNE_COMPILER))
 #        NEPTUNE_CPU ?= amd
 #
 
-NEPTUNE_CPU ?= skylake
+NEPTUNE_CPU ?= broadwell
 
 # ---------------------------------------------------------------
 
 # Define variables here that apply to both the current platform and
 # to ALL compilers supported for the platform in the NEPTUNE build
 # system. Can also do this in the section below just after the
-# include command section.
+# general settings include command.
 #
 # This section can also be used to prepend values to variables that
 # are later defined with the "+=" operator (e.g., CPPFLAGS).
@@ -71,18 +72,7 @@ NEPTUNE_CPU ?= skylake
 #     CPPFLAGS += prepended values  # assuming CPPFLAGS hasn't
 #                                   # yet been defined
 
-ifeq ($(FOR_GPU),t)
-  LEBLK ?= 32
-  LCBLK ?= 32
-  EVEC  ?= 1
-  CVEC  ?= 1
-else
-  LEBLK ?= 4
-  EVEC  ?= 4
-  LCBLK ?= 4
-  CVEC  ?= 4
-endif
-CPPFLAGS += -DLEBLK=$(LEBLK) -DLCBLK=$(LCBLK) -DEVEC=$(EVEC) -DCVEC=$(CVEC)
+# no settings here yet
 
 # ---------------------------------------------------------------
 
@@ -96,8 +86,8 @@ $(info ... reentering PLATFORM-SPECIFIC BUILD SETTINGS MAKEFILE: $(PLATFORM_SPEC
 
 # Define variables here that apply to both the current platform and
 # to ALL compilers supported for the platform in the NEPTUNE build
-# system. Can also do this in the section above just before the include
-# command section.
+# system. Can also do this in the section above just before the 
+# general settings include command.
 #
 # This section can also be used to append values to variables that
 # are defined earlier in the makefile process. These appended values
@@ -105,9 +95,9 @@ $(info ... reentering PLATFORM-SPECIFIC BUILD SETTINGS MAKEFILE: $(PLATFORM_SPEC
 # platform in the NEPTUNE build system.
 #
 # Also, if needed for a special situation, here one can do a full
-# resetting of a variable defined earlier in the general in the
-# makefile process. This section is the last place where variables
-# are defined before the make rules are "executed."
+# resetting of a variable defined earlier in the build process.
+# This section is the last place where variables are defined before
+# the make rules are "executed."
 #
 # Examples:
 #

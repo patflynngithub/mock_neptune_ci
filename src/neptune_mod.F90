@@ -28,6 +28,8 @@ subroutine success_or_failure()
 
 end subroutine success_or_failure
 
+! Outputs a baseline accurate numeric matrix text file and a data result
+! numeric matrix text file.
 ! Is an output numeric matrix text file desired? If so, accurate or
 ! inaccurate (Quality Assurance)?
 ! Also, can instead indicate that want to simulate that writing the file
@@ -68,11 +70,20 @@ subroutine output_matrix_file()
       stop 2
    endif
 
-   ! output numeric matrix text file
+   ! output baseline accurate numeric matrix text file to compare against
+   ! - all zeroes for accurate matrix
+   unit_num = 1
+   open(unit_num, file="baseline_matrix.txt")
+   write(unit_num,*) 0,0,0 
+   write(unit_num,*) 0,0,0 
+   write(unit_num,*) 0,0,0 
+   close(unit_num)
+
+   ! output data result numeric matrix text file
    ! - all zeroes for accurate matrix (good QA)
    ! - all ones for inaccurate matrix (bad QA)
    unit_num = 1
-   open(unit_num, file="matrix.txt")
+   open(unit_num, file="data_result_matrix.txt")
    write(unit_num,*) matrix_value, matrix_value, matrix_value
    write(unit_num,*) matrix_value, matrix_value, matrix_value
    write(unit_num,*) matrix_value, matrix_value, matrix_value
