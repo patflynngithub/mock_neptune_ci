@@ -1,12 +1,9 @@
-name: Testing for pull_request to the main branch
+name: Testing for pull_request to a release branch
 
 on:
   pull_request:
     branches:
-      - main
-
-env:
-  CI_SERVER: true
+      - 'release/**'
 
 jobs:
   mock_test:
@@ -24,6 +21,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r ci/bin/requirements.txt
     - name: Mock test
-      run: | 
+      run: |
         cd ci/mock_test
         ./run_ci.sh
